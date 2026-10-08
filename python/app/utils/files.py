@@ -30,8 +30,9 @@ def read_result(result_id):
     if not is_result_id(result_id):
         raise FileNotFoundError(result_id)
     path = result_dir() / f"{result_id}.txt"
-    with path.open("w+", encoding="utf-8") as handle:
-        return handle.read()
+    if not path.is_file():
+        raise FileNotFoundError(result_id)
+    return path.read_text(encoding="utf-8")
 
 
 def write_processed(result_id, data):
